@@ -1,0 +1,75 @@
+/* Добавляем эти стили в существующий CSS */
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.status-indicator {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-indicator.online {
+    background: #10b981;
+    color: white;
+}
+
+.status-indicator.offline {
+    background: #6b7280;
+    color: white;
+}
+
+.save-indicator {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.btn-secondary {
+    background: #6b7280;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+}
+
+/* Сообщения */
+.message {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Индикатор сохранения */
+.saving {
+    opacity: 0.7;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .header-controls {
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .status-indicator,
+    .save-indicator {
+        font-size: 11px;
+    }
+}
