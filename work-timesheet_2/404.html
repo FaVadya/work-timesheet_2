@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Перенаправление</title>
+    <script>
+        // Перенаправление на главную страницу
+        sessionStorage.redirect = location.href;
+        location.replace('./index.html');
+    </script>
+</head>
+<body>
+    <noscript>
+        <h1>Приложение "Рабочий табель"</h1>
+        <p>Если перенаправление не произошло, <a href="./index.html">перейдите на главную страницу</a>.</p>
+    </noscript>
+</body>
+</html>

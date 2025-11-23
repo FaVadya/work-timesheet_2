@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рабочий табель</title>
+    <meta name="description" content="Приложение для учета рабочего времени">
+    <meta name="theme-color" content="#3b82f6"/>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Рабочий табель</h1>
+            <div class="header-controls">
+                <div id="connectionStatus" class="status-indicator online">
+                    ● Онлайн
+                </div>
+                <div id="lastSaved" class="save-indicator">
+                    Загрузка...
+                </div>
+                <button id="forceSave" class="btn-secondary" title="Принудительное сохранение">
+                    💾
+                </button>
+            </div>
+        </header>
+
+        <div class="month-navigation">
+            <button id="prevMonth" class="btn">‹</button>
+            <h2 id="monthYear"></h2>
+            <button id="nextMonth" class="btn">›</button>
+        </div>
+
+        <div id="calendar" class="calendar"></div>
+
+        <div class="projects-section">
+            <h3>Проекты</h3>
+            <form id="projectForm" class="project-form">
+                <input type="text" id="projectName" placeholder="Название проекта" required>
+                <input type="color" id="projectColor" value="#3b82f6">
+                <button type="submit" class="btn">Добавить</button>
+            </form>
+            <div id="projectsList" class="projects-list"></div>
+        </div>
+
+        <div class="stats-section">
+            <h3>Статистика</h3>
+            <select id="statsPeriod" class="stats-period">
+                <option value="all">За все время</option>
+                <option value="week">За неделю</option>
+                <option value="month">За месяц</option>
+                <option value="year">За год</option>
+            </select>
+            <div id="stats" class="stats"></div>
+        </div>
+    </div>
+
+    <!-- Модальное окно дня -->
+    <div id="dayModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalDate"></h3>
+            
+            <div class="entries-list">
+                <h4>Записи:</h4>
+                <div id="modalEntries"></div>
+            </div>
+            
+            <form id="addEntryForm" class="entry-form">
+                <h4>Добавить запись:</h4>
+                <select id="entryProject" required>
+                    <option value="">Выберите проект</option>
+                </select>
+                <input type="number" id="entryHours" step="0.5" min="0.5" max="24" placeholder="Часы" required>
+                <button type="submit" class="btn">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    
+    <script>
+        // Регистрация Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker зарегистрирован: ', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Ошибка регистрации ServiceWorker: ', error);
+                    });
+            });
+        }
+
+        // Обновление статуса соединения
+        function updateConnectionStatus() {
+            const statusElement = document.getElementById('connectionStatus');
+            if (navigator.onLine) {
+                statusElement.className = 'status-indicator online';
+                statusElement.textContent = '● Онлайн';
+            } else {
+                statusElement.className = 'status-indicator offline';
+                statusElement.textContent = '● Офлайн';
+            }
+        }
+
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        updateConnectionStatus();
+    </script>
+</body>
+</html>
